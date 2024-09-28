@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block title %} Sell Stocks {% endblock %}
+
+{% block main %}
+
+<style>
+    .mb-3 input {
+        margin-bottom: 2%;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" style="text-align: left;">
+            <h2 class="mb-4">Enter details to register as a vendor:</h2>
+            <form action="/add_vendor" method="post">
+                <div class="mb-3">
+                    <!-- INSTEAD OF INPUT USE SELECT -->
+                    <select name="profession" class="form-control" required>
+                        <option value="default" disabled selected>Select your profession</option>
+                        {% for profession in professions %}
+                            <option value="{{ profession }}">{{ profession }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select name="state" id="state" onchange="fetchCities()" class="form-control" required>
+                        <option value="" disabled selected>Select a state</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Karnataka">Karnataka</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select name="city" id="city" class="form-control" required>
+                        <option value="" disabled selected>Select a city</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input name="name"
+                    type="text"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="Your Name / Business Name"
+                    required>
+                    <input name="charge"
+                    type="number"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="How much you charge for a visit?"
+                    oninput="validateSharesInput(this)">
+                    <input name="phone"
+                    type="tel"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="Enter your business number"
+                    oninput="validateSharesInput(this)"
+                    required>
+                    <input name="email"
+                    type="email"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="Enter your business email">
+                    <input name="rating"
+                    type="number"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="Enter your rating"
+                    oninput="validateSharesInput(this)"
+                    required>
+                    <input name="distance"
+                    type="number"
+                    autocomplete="off"
+                    class="form-control"
+                    placeholder="Enter your distance to customer in KM"
+                    oninput="validateSharesInput(this)"
+                    required>
+                </div>
+                <button type="submit" class="btn btn-primary">REGISTER</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script  src="static/script.js"></script>
+
+{% endblock %}

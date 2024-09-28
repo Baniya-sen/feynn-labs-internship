@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %} Transaction History {% endblock %}
+
+{% block main %}
+<style>
+    .custom-font {
+        font-family: 'Consolas', sans-serif;
+    }
+</style>
+
+<div class="container mt-0">
+    <h2 class="mb-5" style="font-weight: 600;">Recommended vendors for you</h2>
+    <div style="width: 100%; display: flex; justify-content: center;">
+        <table class="table custom-font">
+            <thead>
+                <tr style="font-size: 1.1rem;">
+                    <th>Service</th>
+                    <th>Business Name</th>
+                    <th>Visit Charge</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Distance</th>
+                    <th>Vendor Match</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vendor in vendors %}
+                    <tr style="background-color: rgba(252, 252, 215, 0.6);">
+                        <td>{{ vendor["vendor_type"] }}</td>
+                        <td>{{ vendor["vendor_name"] }}</td>
+                        <td>{{ vendor["visit_charge"] | INR}}</td>
+                        <td>{{ vendor["vendor_number"] }}</td>
+                        <td>{{ vendor["vendor_email"] }}</td>
+                        <td>{{ vendor["vendor_rating"] | RATING}}</td>
+                        <td>{{ vendor["vendor_distance"] | KM}}</td>
+                        <td>{{ vendor["match_percentage"] | MEASURE}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block main %}
+<style>
+    .row {
+        width: 120%;
+    }
+
+    .services-table {
+        margin: auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    .services-table img {
+        width: 1in;
+        height: 1in;
+    }
+
+    .filter-section {
+        margin-top: 20px;
+        margin-right: 4%;
+        padding-right: 5%;
+        border-right: 1px solid #ddd; /* Add a right border for separation */
+    }
+
+    .filter-section h5 {
+        font-size: 2rem;
+    }
+
+    .autocomplete-suggestions {
+        margin-top: 2.2%;
+        max-height: 150px;
+        width: 20%;
+        overflow-y: auto;
+        background-color: white;
+        position: absolute;
+        z-index: 9999;
+        text-align: left;
+        display: none;
+    }
+
+    .autocomplete-suggestion {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .autocomplete-suggestion:hover {
+        background-color: #f1f1f1;
+    }
+
+    .autocomplete-suggestions.active {
+        display: block;  /* Only display suggestions when active */
+        border: 1px solid #ddd;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Sidebar: Filters (adjusted to be more left and with right border) -->
+        <div class="col-md-3 filter-section">
+            <h5 style="font-weight: 600;">Filters</h5>
+            <form action="/" method="post">
+                <div class="mb-3">
+                    <label for="filterLocation" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="filterLocation" placeholder="Enter location" value="{{ location }}">
+                </div>
+                <div class="mb-3">
+                    <label for="filterService" class="form-label">Service</label>
+                    <select class="form-select" id="filterService">
+                        <option selected disabled>Choose service...</option>
+                        {% for service in services %}
+                        <option value="{{ service }}">{{ service }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="filterRegister" class="form-label">Registered</label>
+                    <select class="form-select" id="filterRegister">
+                        <option selected>All</option>
+                        <option value="yes">Registered</option>
+                        <option value="no">Unregistered</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-7">
+            <!-- Location Input -->
+            <div class="mb-3">
+                <label class="form-label" style="font-size: 1.4rem; font-weight: 600;">Your Location</label>
+                <div class="d-flex">
+                    <form id="locationForm" action="/" method="post" class="d-flex w-100">
+                        <input type="text" id="locationInput" class="form-control me-2" name="locationInput" placeholder="Enter your location" value="{{ location }}" autocomplete="off">
+                        <button type="submit" id="submitLocation" class="btn btn-info">Locate</button>
+                    </form>
+                    <!-- Autocomplete suggestions container -->
+                    <div id="suggestions" class="autocomplete-suggestions"></div>
+                </div>
+            </div>
+
+            <!-- Services Table -->
+            <div class="services-table">
+                <table class="table text-center" style="table-layout: fixed; border: none;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #000;">
+                            <th colspan="6">Available Services</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="height: 20px;"></tr>
+                        <tr>
+                            {% for name, path in services.items() %}
+                                <td style="border: none; width: 200px; padding-bottom: 20px;">
+                                    <a href="/service/{{ location }}/{{ name }}"><img src="{{ path }}" alt="{{ name }}" style="width: 100px; height: 100px;"></a>
+                                </td>
+                                {% if loop.index is divisibleby 6 and not loop.last %}
+                                </tr><tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const cities = {{ cities | tojson | safe }};
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+{% endblock %}
